@@ -63,13 +63,13 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		$output = $this->options;
 
 		if ( isset( $input['Instamojo-Api-Key'] ) ) {
-			$output['Instamojo-Api-Key'] = sanitize_text_field( $input['Instamojo-Api-Key'] );
+			$output['Instamojo-Api-Key'] = $input['Instamojo-Api-Key'];
 		}
 		if ( isset( $input['Instamojo-Auth-Token'] ) ) {
-			$output['Instamojo-Auth-Token'] = sanitize_text_field( $input['Instamojo-Auth-Token'] );
+			$output['Instamojo-Auth-Token'] = $input['Instamojo-Auth-Token'];
 		}
 		if ( isset( $input['Instamojo-salt'] ) ) {
-			$output['Instamojo-salt'] = sanitize_text_field( $input['Instamojo-salt'] );
+			$output['Instamojo-salt'] = $input['Instamojo-salt'];
 		}
 		if ( isset( $input['sandbox'] ) ) {
 			$output['sandbox'] = (bool) $input['sandbox'];
