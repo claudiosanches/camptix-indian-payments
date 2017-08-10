@@ -285,23 +285,23 @@ class CampTix_Payment_Method_RazorPay extends CampTix_Payment_Method {
 		$output = $this->options;
 
 		if ( isset( $input['razorpay_popup_title'] ) ) {
-			$output['razorpay_popup_title'] = $input['razorpay_popup_title'];
+			$output['razorpay_popup_title'] = sanitize_text_field( $input['razorpay_popup_title'] );
 		}
 
 		if ( isset( $input['live_key_id'] ) ) {
-			$output['live_key_id'] = $input['live_key_id'];
+			$output['live_key_id'] = sanitize_text_field( $input['live_key_id'] );
 		}
 
 		if ( isset( $input['live_key_secret'] ) ) {
-			$output['live_key_secret'] = $input['live_key_secret'];
+			$output['live_key_secret'] = sanitize_text_field( $input['live_key_secret'] );
 		}
 
 		if ( isset( $input['test_key_id'] ) ) {
-			$output['test_key_id'] = $input['test_key_id'];
+			$output['test_key_id'] = sanitize_text_field( $input['test_key_id'] );
 		}
 
 		if ( isset( $input['test_key_secret'] ) ) {
-			$output['test_key_secret'] = $input['test_key_secret'];
+			$output['test_key_secret'] = sanitize_text_field( $input['test_key_secret'] );
 		}
 
 		if ( isset( $input['sandbox'] ) ) {

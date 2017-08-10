@@ -30,7 +30,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 			'sandbox' => true,
 		), $this->get_payment_options() );
 
-		// IPN Listener		
+		// IPN Listener
 		if ( $this->is_gateway_enable() ) {
 			add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 			add_filter( 'camptix_form_register_complete_attendee_object', array( $this, 'add_attendee_info' ), 10, 3 );
@@ -53,7 +53,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		// code change by me start
 		$this->add_settings_field_helper( __('Instamojo-Api-Key', 'campt-indian-payment-gateway'), 'Instamojo Api KEY', array( $this, 'field_text' ) );
 		$this->add_settings_field_helper( __('Instamojo-Auth-Token', 'campt-indian-payment-gateway'), 'Instamojo Auth Token', array( $this, 'field_text' ) );
-		$this->add_settings_field_helper( __('Instamojo-salt', 'campt-indian-payment-gateway'), 'Instamojo Salt', array( $this, 'field_text' ) );		
+		$this->add_settings_field_helper( __('Instamojo-salt', 'campt-indian-payment-gateway'), 'Instamojo Salt', array( $this, 'field_text' ) );
 		$this->add_settings_field_helper( 'sandbox', __( 'Sandbox Mode', 'campt-indian-payment-gateway' ), array( $this, 'field_yesno' ),
 			__( "The Instamojo Sandbox is a way to test payments without using real accounts and transactions. If you'd like to use Sandbox Mode, you'll need to create a <a href='https://docs.instamojo.com/docs/what-is-the-difference-between-the-sandbox-and-production-environment'>Instamojo Developer</a> account and obtain the API credentials for your sandbox user.",'campt-indian-payment-gateway' )
 		);
@@ -63,13 +63,13 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		$output = $this->options;
 
 		if ( isset( $input['Instamojo-Api-Key'] ) ) {
-			$output['Instamojo-Api-Key'] = $input['Instamojo-Api-Key'];
+			$output['Instamojo-Api-Key'] = sanitize_text_field( $input['Instamojo-Api-Key'] );
 		}
 		if ( isset( $input['Instamojo-Auth-Token'] ) ) {
-			$output['Instamojo-Auth-Token'] = $input['Instamojo-Auth-Token'];
+			$output['Instamojo-Auth-Token'] = sanitize_text_field( $input['Instamojo-Auth-Token'] );
 		}
 		if ( isset( $input['Instamojo-salt'] ) ) {
-			$output['Instamojo-salt'] = $input['Instamojo-salt'];
+			$output['Instamojo-salt'] = sanitize_text_field( $input['Instamojo-salt'] );
 		}
 		if ( isset( $input['sandbox'] ) ) {
 			$output['sandbox'] = (bool) $input['sandbox'];
@@ -138,10 +138,10 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 			wp_safe_redirect( esc_url_raw( $url . '#tix' ) );
 			die();
 		}
-	}	
+	}
 	 /* Runs when Instamjo Money sends an ITN signal. Verify the payload and use $this->payment_result
 	 to signal a transaction result back to CampTix.*/
-	
+
 	function payment_notify() {
 		global $camptix;
 
@@ -167,7 +167,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		if ( $mac_provided == $mac_calculated ) {
 			if ( $data['status'] == "Credit" ) {
 				// Payment was successful, mark it as successful in your database.
-				$this->payment_result( $_REQUEST['tix_payment_token'], CampTix_Plugin::PAYMENT_STATUS_COMPLETED);	
+				$this->payment_result( $_REQUEST['tix_payment_token'], CampTix_Plugin::PAYMENT_STATUS_COMPLETED);
 			} else {
 				// Payment was unsuccessful, mark it as failed in your database.
 				$this->payment_result( $_REQUEST['tix_payment_token'], CampTix_Plugin::PAYMENT_STATUS_FAILED);
@@ -175,7 +175,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		} else {
 			$this->payment_result( $_REQUEST['tix_payment_token'], CampTix_Plugin::PAYMENT_STATUS_PENDING);
 		}
-		
+
 	}
 
 	public function payment_checkout( $payment_token ) {
@@ -244,9 +244,9 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		);
 
 		$url = $this->options['sandbox'] ? 'https://test.instamojo.com/api/1.1/payment-requests/' : 'https://www.instamojo.com/api/1.1/payment-requests/';
-         
+
 		//It will execute when number is complete incomplete for validating instamojo number process.
-        
+
 		$phone = ltrim( $extra_info['phone'], '0' );
 
         if ( strlen($phone) > 10 ) {
@@ -254,7 +254,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
             $attendee_phone = ltrim( $attendee_phone, '0' );
             if ( strlen($attendee_phone) <= 9 ) {
                 $attendee_phone = str_pad( $attendee_phone, 10, '9', STR_PAD_LEFT);
-             
+
         }
         } elseif ( strlen($phone) <= 9 ) {
              $attendee_phone = str_pad( $phone, 10, '9', STR_PAD_LEFT);
@@ -292,7 +292,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 
 		// GET a response.
 		$response = wp_remote_post( $url, $params );
-		
+
 		// Check to see if the request was valid.
 		if ( ! is_wp_error( $response )  ) {
 
@@ -303,7 +303,7 @@ class CampTix_Payment_Method_Instamojo extends CampTix_Payment_Method {
 		echo 'Invalid Insatmojo Access Key & Token';
 		return;
 		}
-      	
+
       	return;
 
 	}
