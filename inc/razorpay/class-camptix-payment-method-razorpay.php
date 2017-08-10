@@ -128,13 +128,13 @@ class CampTix_Payment_Method_RazorPay extends CampTix_Payment_Method {
 		$merchant = $this->get_merchant_credentials();
 
 		$data = array(
-			'merchant_key_id' => $merchant['key_id'],
+			'merchant_key_id' => esc_js( $merchant['key_id'] ),
 			'gateway_id'      => $this->id,
 			'popup'           => array(
-				'color' => apply_filters( 'camptix_razorpay_popup_color', '' ),
+				'color' => esc_js( apply_filters( 'camptix_razorpay_popup_color', '' ) ),
 
 				// Ideal logo size: https://i.imgur.com/n5tjHFD.png
-				'image' => apply_filters( 'camptix_razorpay_popup_logo_image', '' ),
+				'image' => esc_js( apply_filters( 'camptix_razorpay_popup_logo_image', '' ) ),
 			),
 		);
 
@@ -285,23 +285,23 @@ class CampTix_Payment_Method_RazorPay extends CampTix_Payment_Method {
 		$output = $this->options;
 
 		if ( isset( $input['razorpay_popup_title'] ) ) {
-			$output['razorpay_popup_title'] = sanitize_text_field( $input['razorpay_popup_title'] );
+			$output['razorpay_popup_title'] = wp_kses_post( $input['razorpay_popup_title'] );
 		}
 
 		if ( isset( $input['live_key_id'] ) ) {
-			$output['live_key_id'] = sanitize_text_field( $input['live_key_id'] );
+			$output['live_key_id'] = $input['live_key_id'];
 		}
 
 		if ( isset( $input['live_key_secret'] ) ) {
-			$output['live_key_secret'] = sanitize_text_field( $input['live_key_secret'] );
+			$output['live_key_secret'] = $input['live_key_secret'];
 		}
 
 		if ( isset( $input['test_key_id'] ) ) {
-			$output['test_key_id'] = sanitize_text_field( $input['test_key_id'] );
+			$output['test_key_id'] = $input['test_key_id'];
 		}
 
 		if ( isset( $input['test_key_secret'] ) ) {
-			$output['test_key_secret'] = sanitize_text_field( $input['test_key_secret'] );
+			$output['test_key_secret'] = $input['test_key_secret'];
 		}
 
 		if ( isset( $input['sandbox'] ) ) {
